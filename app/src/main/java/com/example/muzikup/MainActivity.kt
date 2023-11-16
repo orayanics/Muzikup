@@ -5,12 +5,13 @@ import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import api.LastFmService
+import api.TrackResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.net.URL
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,7 +37,7 @@ class MainActivity : AppCompatActivity() {
                     if (response.isSuccessful) {
                         // can use response.body()
                         response.body()
-                        Log.i("oraya_response", response.body().toString())
+                        Log.i("response.body", response.body().toString())
                     } else {
                         // might need to inspect the error body
                         response.errorBody()
@@ -50,8 +51,7 @@ class MainActivity : AppCompatActivity() {
 
 
             })
-            Log.i("oraya_response", call.toString())
-            val apiResponse = URL("http://ws.audioscrobbler.com/2.0/?method=track.getInfo&api_key=a863ec62a3b501170c759fc562a79267&artist=cher&track=believe&format=json").readText()
+            Log.i("call.reponse", call.toString())
         } catch (e : Exception){
             Log.e("oraya_error", e.toString())
         }

@@ -1,5 +1,6 @@
-package com.example.muzikup
+package api
 
+import com.example.muzikup.Track
 import com.google.gson.annotations.SerializedName
 
 data class TrackResponse(
