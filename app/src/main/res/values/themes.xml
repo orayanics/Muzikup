@@ -1,9 +1,15 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+    <color name="bg_black">#111111</color>
+    <color name="accent_green">#40AA4A</color>
+    <color name="transparent">#00FFFFFF</color>
+
     <!-- Base application theme. -->
     <style name="Base.Theme.Muzikup" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:background">#111111</item>
     </style>
 
     <style name="Theme.Muzikup" parent="Base.Theme.Muzikup" />
+
 </resources>

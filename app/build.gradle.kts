@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.muzikup"
-        minSdk = 24
+        minSdk = 28
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
@@ -51,6 +51,5 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:okhttp:4.11.0")
     implementation ("com.google.code.gson:gson:2.10.1")
-
 
 }
