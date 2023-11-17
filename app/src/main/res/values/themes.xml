@@ -2,6 +2,7 @@
     <color name="bg_black">#111111</color>
     <color name="accent_green">#40AA4A</color>
     <color name="transparent">#00FFFFFF</color>
+    <color name="gray">#666666</color>
 
     <!-- Base application theme. -->
     <style name="Base.Theme.Muzikup" parent="Theme.Material3.DayNight.NoActionBar">
