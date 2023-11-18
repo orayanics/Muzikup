@@ -19,7 +19,7 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
->
+            >
             <include layout="@layout/nav_search"/>
 
         </androidx.cardview.widget.CardView>
@@ -27,50 +27,19 @@
     </LinearLayout>
 
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_weight="0"
-        android:gravity="center"
-        android:elevation="3dp"
-        android:paddingVertical="10dp"
+        android:layout_weight="1"
+        android:elevation="2dp"
         android:outlineSpotShadowColor="@color/white"
         android:outlineAmbientShadowColor="@color/white">
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:cornerRadius="20dp"
-            android:backgroundTint="@color/gray"
-            android:text="Most Likes"/>
-
-        <Space
-            android:layout_width="20dp"
-            android:layout_height="0dp"/>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:cornerRadius="20dp"
-            android:backgroundTint="@color/gray"
-            android:text="Recent"
-            />
-
-    </LinearLayout>
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_weight="1"
-    android:elevation="2dp"
-    android:outlineSpotShadowColor="@color/white"
-    android:outlineAmbientShadowColor="@color/white">
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/feedRecycler"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </androidx.recyclerview.widget.RecyclerView>
-</ScrollView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/feedRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </androidx.recyclerview.widget.RecyclerView>
+    </ScrollView>
 
 
     <LinearLayout
