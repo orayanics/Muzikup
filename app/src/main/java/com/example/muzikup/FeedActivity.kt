@@ -27,8 +27,10 @@ class FeedActivity : AppCompatActivity() {
         val userAccess = access
 
         val layoutResId: Int = if (userAccess == "USER") {
+            // return 1
             R.layout.footer_user
         } else {
+            // return 0
             R.layout.footer_admin
         }
         // Inflate and replace the included layout
