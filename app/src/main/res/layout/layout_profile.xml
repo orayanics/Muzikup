@@ -27,6 +27,37 @@
     </LinearLayout>
 
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_weight="0"
+        android:gravity="center"
+        android:elevation="3dp"
+        android:paddingVertical="10dp"
+        android:outlineSpotShadowColor="@color/white"
+        android:outlineAmbientShadowColor="@color/white">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cornerRadius="20dp"
+            android:backgroundTint="@color/gray"
+            android:text="Most Likes"/>
+
+        <Space
+            android:layout_width="20dp"
+            android:layout_height="0dp"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cornerRadius="20dp"
+            android:backgroundTint="@color/gray"
+            android:text="Recent"
+            />
+
+    </LinearLayout>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

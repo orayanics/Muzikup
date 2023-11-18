@@ -83,10 +83,12 @@
         android:outlineAmbientShadowColor="@color/white">
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/footerId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <include layout="@layout/layout_footer"/>
+            <include layout="@layout/footer_user"
+                android:id="@+id/partialFooter"/>
         </androidx.cardview.widget.CardView>
 
     </LinearLayout>
