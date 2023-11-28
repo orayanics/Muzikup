@@ -26,15 +26,15 @@ class SearchAdapter(private var searchResults: List<Track>) :
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
         val currentTrack = searchResults[position]
 
-        holder.trackName.text = currentTrack.name
-        holder.artistName.text = currentTrack.artist
-        Log.d("TrackAdapter", "Album Name: ${currentTrack.album?.name}")
-        if (currentTrack.album != null && !currentTrack.album.name.isNullOrBlank()) {
-            holder.albumName.text = currentTrack.album.name
-        } else {
-            // Handle the case where the album name is null or empty
-            holder.albumName.text = "Unknown Album"
-        }
+        holder.trackName.text = currentTrack.name.uppercase()
+        holder.artistName.text = currentTrack.artist.uppercase()
+//        Log.d("TrackAdapter", "Album Name: ${currentTrack.album?.name}")
+//        if (currentTrack.album != null && !currentTrack.album.name.isNullOrBlank()) {
+//            holder.albumName.text = currentTrack.album.name
+//        } else {
+//            // Handle the case where the album name is null or empty
+//            holder.albumName.text = "Unknown Album"
+//        }
 
 
     }

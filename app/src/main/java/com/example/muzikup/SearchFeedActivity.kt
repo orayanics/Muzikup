@@ -29,7 +29,7 @@ class SearchFeedActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search_feed)
+        setContentView(R.layout.activity_post)
 
         //initialize retrofit
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
@@ -45,28 +45,32 @@ class SearchFeedActivity : AppCompatActivity() {
 
 
         // Initialize RecyclerView and adapters
-        trackRecyclerView = findViewById(R.id.recyclerViewTracks)
-        trackRecyclerView.layoutManager = LinearLayoutManager(this)
-        searchAdapter = SearchAdapter(emptyList())
-        trackRecyclerView.adapter = searchAdapter
+        try{
+            trackRecyclerView = findViewById(R.id.recyclerViewTracks)
+            trackRecyclerView.layoutManager = LinearLayoutManager(this)
+            searchAdapter = SearchAdapter(emptyList())
+            trackRecyclerView.adapter = searchAdapter
 
-
-        // Initialize SearchView
-        searchView = findViewById(R.id.searchView)
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                Log.d("SearchQuery", "Query submitted: $query")
-                if (!query.isNullOrBlank()) {
-                    performSearch(query)
+            // Initialize SearchView
+            searchView = findViewById(R.id.searchViewPost)
+            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    Log.d("SearchQuery", "Query submitted: $query")
+                    if (!query.isNullOrBlank()) {
+                        performSearch(query)
+                    }
+                    return true
                 }
-                return true
-            }
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                // Handle text changes if needed
-                return true
-            }
-        })
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    // Handle text changes if needed
+                    return true
+                }
+            })
+        } catch (e: Exception) {
+            Log.e("launch", e.toString())
+        }
+
     }
 
     fun performSearch(query: String) {
@@ -75,6 +79,7 @@ class SearchFeedActivity : AppCompatActivity() {
 
         call.enqueue(object : Callback<SearchResponse> {
             override fun onResponse(call: Call<SearchResponse>, response: Response<SearchResponse>) {
+                Log.d("APIResponse", "API Link: ${response.body()}")
                 Log.d("APIResponse", "Code: ${response.code()}")
                 Log.d("APIResponse", "Body: ${response.body()}")
                 if (response.isSuccessful) {
@@ -87,7 +92,6 @@ class SearchFeedActivity : AppCompatActivity() {
                     val searchResponse = response.body()
                     val searchResults = searchResponse?.results?.trackmatches?.track
                     if (searchResults != null && searchResults.isNotEmpty()) {
-
                         // Update the adapter with the received search results
                         searchAdapter.updateData(searchResults)
                         Log.d("SearchResults", "Number of results: ${searchResults.size}")

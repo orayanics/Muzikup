@@ -13,7 +13,7 @@ interface LastFmService {
         @Query("format") format: String = "json"
     ): Call<TrackResponse>
 
-    @GET("/2.0/?method=track.search")
+    @GET("/2.0/?method=track.search&limit=5")
     fun searchTracks(
         @Query("api_key") key: String,
         @Query("track") track: String,

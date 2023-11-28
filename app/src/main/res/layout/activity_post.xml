@@ -26,7 +26,6 @@
 
     </LinearLayout>
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -67,39 +66,57 @@
         <Space
             android:layout_width="0dp"
             android:layout_height="20dp"/>
-            <EditText
-                android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            
+            <SearchView
+                android:id="@+id/searchViewPost"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/music"
-                android:drawablePadding="20dp"
-                android:textColor="@color/white"
-                android:textColorHint="@color/gray"
-                android:backgroundTint="@color/white"
-                android:paddingVertical="20dp"
-                android:paddingHorizontal="10dp"
-                android:hint="Which song are you thinking of?"
+                android:iconifiedByDefault="false"
+                android:searchIcon="@drawable/music"
+                app:defaultQueryHint="Which song are you thinking of?"
                 />
+
+            <ScrollView
+                style="@android:style/Widget.Holo.Light.ScrollView"
+                android:layout_width="match_parent"
+                android:layout_height="100dp">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerViewTracks"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="20dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            </ScrollView>
+
+        </LinearLayout>
+
+
+
         <Space
             android:layout_width="0dp"
             android:layout_height="20dp"/>
 
-        <RelativeLayout
+        <EditText
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginVertical="30dp"
-            android:padding="10dp"
+            android:layout_height="300dp"
             android:layout_marginHorizontal="50dp"
             android:background="@drawable/border_white"
-            app:cardBackgroundColor="@color/gray_dark">
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/transparent"
-                android:hint="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
-                android:textColor="@color/white"
-                android:textColorHint="@color/gray" />
-        </RelativeLayout>
+            app:cardBackgroundColor="@color/gray_dark"
+            android:inputType="textCapSentences|textMultiLine"
+            android:padding="10dp"
+            android:gravity="top"
+            android:scrollHorizontally="false"
+            android:maxLines ="20"
+            android:maxLength ="300"
+            android:hint="What do you think of the song?"
+            android:textColor="@color/white"
+            android:textColorHint="@color/gray" />
 
     </LinearLayout>
 
