@@ -49,41 +49,49 @@
             >
 
             <TextView
-                android:id="@+id/btnLogin"
+                android:id="@+id/txtInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:focusableInTouchMode="false"
                 android:fontFamily="@font/inter_bold"
-                android:paddingHorizontal="80dp"
+                android:paddingHorizontal="20dp"
                 android:paddingVertical="15dp"
-                android:text="API Preview"
+                android:visibility="gone"
                 android:background="@drawable/black_stroke"
                 android:textColor="@color/white"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                />
 
         </androidx.cardview.widget.CardView>
 
         <Space
             android:layout_width="0dp"
             android:layout_height="20dp"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-            
-            <SearchView
+
+            <androidx.appcompat.widget.SearchView
                 android:id="@+id/searchViewPost"
-                android:layout_width="match_parent"
+                style="@style/WhiteSearchViewStyle"
+                app:queryBackground="@color/white"
+                app:searchIcon="@drawable/music"
+                app:showDividers="middle"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:iconifiedByDefault="false"
-                android:searchIcon="@drawable/music"
-                app:defaultQueryHint="Which song are you thinking of?"
-                />
+                app:defaultQueryHint="Which song are you thinking of?" />
 
             <ScrollView
+                android:id="@+id/scrollPost"
                 style="@android:style/Widget.Holo.Light.ScrollView"
                 android:layout_width="match_parent"
-                android:layout_height="100dp">
+                android:layout_height="100dp"
+                android:padding="20dp">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerViewTracks"
@@ -95,8 +103,6 @@
             </ScrollView>
 
         </LinearLayout>
-
-
 
         <Space
             android:layout_width="0dp"
@@ -112,12 +118,24 @@
             android:padding="10dp"
             android:gravity="top"
             android:scrollHorizontally="false"
-            android:maxLines ="20"
             android:maxLength ="300"
             android:hint="What do you think of the song?"
             android:textColor="@color/white"
             android:textColorHint="@color/gray" />
 
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:focusableInTouchMode="false"
+            android:fontFamily="@font/inter_bold"
+            android:layout_marginTop="10dp"
+            android:paddingHorizontal="40dp"
+            android:paddingVertical="15dp"
+            android:text="Post"
+            android:textAlignment="center"
+            android:background="@drawable/greenbtn"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
     </LinearLayout>
 
     <LinearLayout

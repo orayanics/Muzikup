@@ -1,20 +1,39 @@
 package com.example.muzikup
 
+import android.content.ClipData.Item
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.muzikup.Track
 
-class SearchAdapter(private var searchResults: List<Track>) :
+class SearchAdapter(
+    private var searchResults: List<Track>,
+    private val listener: OnItemClickListener
+) :
     RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
 
-    class SearchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class SearchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), OnClickListener {
         val trackName: TextView = itemView.findViewById(R.id.textViewTrackName)
         val artistName: TextView = itemView.findViewById(R.id.textViewArtistName)
-        val albumName: TextView = itemView.findViewById(R.id.textViewAlbumName)
+
+        init {
+            itemView.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View?) {
+            val position = adapterPosition
+            if (position != RecyclerView.NO_POSITION) {
+                listener.onItemClick(position, trackName.text.toString(), artistName.text.toString())
+            }
+        }
+    }
+
+    interface OnItemClickListener {
+        fun onItemClick(position: Int, track: String, artist : String)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
@@ -25,18 +44,8 @@ class SearchAdapter(private var searchResults: List<Track>) :
 
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
         val currentTrack = searchResults[position]
-
         holder.trackName.text = currentTrack.name.uppercase()
         holder.artistName.text = currentTrack.artist.uppercase()
-//        Log.d("TrackAdapter", "Album Name: ${currentTrack.album?.name}")
-//        if (currentTrack.album != null && !currentTrack.album.name.isNullOrBlank()) {
-//            holder.albumName.text = currentTrack.album.name
-//        } else {
-//            // Handle the case where the album name is null or empty
-//            holder.albumName.text = "Unknown Album"
-//        }
-
-
     }
 
     override fun getItemCount(): Int {

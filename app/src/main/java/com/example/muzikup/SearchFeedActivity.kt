@@ -4,7 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.StrictMode
 import android.util.Log
+import android.view.View
 import android.view.Window
+import android.widget.ScrollView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -20,9 +23,8 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class SearchFeedActivity : AppCompatActivity() {
-
-    private lateinit var trackRecyclerView: RecyclerView
+ class SearchFeedActivity : AppCompatActivity(), SearchAdapter.OnItemClickListener{
+     private lateinit var trackRecyclerView: RecyclerView
     private lateinit var searchAdapter: SearchAdapter
     private lateinit var searchView: SearchView
     private lateinit var lastFmService: LastFmService
@@ -48,9 +50,9 @@ class SearchFeedActivity : AppCompatActivity() {
         try{
             trackRecyclerView = findViewById(R.id.recyclerViewTracks)
             trackRecyclerView.layoutManager = LinearLayoutManager(this)
-            searchAdapter = SearchAdapter(emptyList())
+            searchAdapter = SearchAdapter(emptyList(), this)
             trackRecyclerView.adapter = searchAdapter
-
+            val scrollView : ScrollView = findViewById(R.id.scrollPost)
             // Initialize SearchView
             searchView = findViewById(R.id.searchViewPost)
             searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -58,22 +60,40 @@ class SearchFeedActivity : AppCompatActivity() {
                     Log.d("SearchQuery", "Query submitted: $query")
                     if (!query.isNullOrBlank()) {
                         performSearch(query)
+                        scrollView.visibility = View.VISIBLE
                     }
                     return true
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
                     // Handle text changes if needed
+                    if(newText.isNullOrBlank()){
+                        scrollView.visibility = View.GONE
+                        searchAdapter.updateData(emptyList())
+                    }
                     return true
                 }
             })
+
+            scrollView.visibility = View.GONE
+
         } catch (e: Exception) {
             Log.e("launch", e.toString())
         }
 
     }
 
-    fun performSearch(query: String) {
+     override fun onItemClick(position: Int, track: String, artist: String) {
+         Toast.makeText(this, "$track $artist", Toast.LENGTH_SHORT).show()
+         val info : TextView = findViewById(R.id.txtInfo)
+         info.visibility = View.VISIBLE
+         info.text = "$track by $artist"
+         val scrollView : ScrollView = findViewById(R.id.scrollPost)
+         scrollView.visibility = View.GONE
+         searchAdapter.notifyItemChanged(position)
+     }
+
+     fun performSearch(query: String) {
         // Perform the API search request
         val call = lastFmService.searchTracks("a863ec62a3b501170c759fc562a79267", query)
 
@@ -119,4 +139,5 @@ class SearchFeedActivity : AppCompatActivity() {
             }
         })
     }
-}
+
+ }
