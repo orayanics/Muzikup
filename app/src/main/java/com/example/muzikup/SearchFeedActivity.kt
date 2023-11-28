@@ -6,6 +6,7 @@ import android.os.StrictMode
 import android.util.Log
 import android.view.View
 import android.view.Window
+import android.widget.Button
 import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
@@ -46,13 +47,18 @@ import retrofit2.converter.gson.GsonConverterFactory
         lastFmService = retrofit.create(LastFmService::class.java)
 
 
-        // Initialize RecyclerView and adapters
+
         try{
+            // Initialize RecyclerView and adapters
             trackRecyclerView = findViewById(R.id.recyclerViewTracks)
             trackRecyclerView.layoutManager = LinearLayoutManager(this)
             searchAdapter = SearchAdapter(emptyList(), this)
             trackRecyclerView.adapter = searchAdapter
+
+            // Initialize other elements
             val scrollView : ScrollView = findViewById(R.id.scrollPost)
+            val btnPost : Button = findViewById(R.id.btnPost)
+
             // Initialize SearchView
             searchView = findViewById(R.id.searchViewPost)
             searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -76,6 +82,11 @@ import retrofit2.converter.gson.GsonConverterFactory
             })
 
             scrollView.visibility = View.GONE
+
+            // Post Listener
+            btnPost.setOnClickListener {
+
+            }
 
         } catch (e: Exception) {
             Log.e("launch", e.toString())
