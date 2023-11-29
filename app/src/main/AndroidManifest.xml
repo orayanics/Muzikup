@@ -19,23 +19,36 @@
         <activity
             android:name=".SearchFeedActivity"
             android:exported="true">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
         </activity>
 
         <activity
             android:name=".FeedActivity"
             android:exported="true" />
+
         <activity
             android:name=".LoginActivity"
             android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
+
         <activity
             android:name=".RegisterActivity"
             android:exported="true" />
+
+        <activity android:name="auth.SpotifyPkceLoginActivityImpl"
+            android:launchMode="singleTop" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="spotifyandroidplayground" android:host="spotify-pkce" />
+            </intent-filter>
+        </activity>
 
         <meta-data
             android:name="preloaded_fonts"
