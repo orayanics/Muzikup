@@ -52,7 +52,7 @@
             android:background="@color/transparent"
             android:focusableInTouchMode="false"
             android:fontFamily="@font/inter_bold"
-            android:text="Hello this is a tagline!"
+            android:text="(tagline) you login with spotify"
             android:textColor="@color/white"
             android:textSize="16sp" />
 

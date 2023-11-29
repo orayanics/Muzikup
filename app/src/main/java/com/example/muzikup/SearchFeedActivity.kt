@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,6 +18,8 @@ import androidx.recyclerview.widget.RecyclerView
 import api.LastFmService
 import api.SearchResponse
 import api.TrackResponse
+import auth.guardValidSpotifyApi
+import com.adamratzman.spotify.SpotifyException
 import com.example.muzikup.Track
 import retrofit2.Call
 import retrofit2.Callback
@@ -34,6 +37,18 @@ import retrofit2.converter.gson.GsonConverterFactory
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_post)
 
+        // Guard clause for valid Spotify API
+        guardValidSpotifyApi(SearchFeedActivity::class.java) { api ->
+            if (!api.isTokenValid(true).isValid) {
+                throw SpotifyException.ReAuthenticationNeededException()
+            }
+
+            // go to the whole searchfeed
+            setupActivity()
+        }
+    }
+
+     private fun setupActivity() {
         //initialize retrofit
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)

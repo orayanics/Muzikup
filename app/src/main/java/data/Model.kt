@@ -2,7 +2,7 @@ package data
 
 import com.adamratzman.spotify.auth.SpotifyDefaultCredentialStore
 import com.example.muzikup.BuildConfig
-import utils.SpotifyPlaygroundApplication
+import com.example.muzikup.SpotifyPlaygroundApplication
 
 
 object Model {
