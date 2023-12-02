@@ -109,6 +109,7 @@
             android:layout_height="20dp"/>
 
         <EditText
+            android:id="@+id/postContent"
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:layout_marginHorizontal="50dp"

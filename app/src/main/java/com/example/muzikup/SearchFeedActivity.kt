@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import android.view.Window
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
@@ -60,8 +61,6 @@ import retrofit2.converter.gson.GsonConverterFactory
             .build()
 
         lastFmService = retrofit.create(LastFmService::class.java)
-
-
 
         try{
             // Initialize RecyclerView and adapters
@@ -117,6 +116,11 @@ import retrofit2.converter.gson.GsonConverterFactory
          val scrollView : ScrollView = findViewById(R.id.scrollPost)
          scrollView.visibility = View.GONE
          searchAdapter.notifyItemChanged(position)
+     }
+
+     // Post to Firebase
+     private fun postReview() {
+         val content : EditText = findViewById(R.id.postContent)
      }
 
      fun performSearch(query: String) {
