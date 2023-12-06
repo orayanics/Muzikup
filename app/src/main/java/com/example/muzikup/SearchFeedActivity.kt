@@ -63,12 +63,13 @@ import retrofit2.converter.gson.GsonConverterFactory
             }
 
             // go to the whole searchfeed
+            Toast.makeText(this, "User: ${api.getUserId()}", Toast.LENGTH_SHORT).show()
             setupActivity()
         }
     }
 
      private fun setupActivity() {
-        //initialize retrofit
+         //initialize retrofit
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
 
