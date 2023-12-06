@@ -6,11 +6,13 @@ import android.content.Intent
 import android.util.Log
 import android.widget.Toast
 import com.adamratzman.spotify.SpotifyClientApi
+import com.adamratzman.spotify.SpotifyException
 import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.auth.pkce.AbstractSpotifyPkceLoginActivity
 import com.example.muzikup.BuildConfig
 import com.example.muzikup.SearchFeedActivity
 import com.example.muzikup.SpotifyPlaygroundApplication
+import data.Model
 import utils.safeLet
 import utils.toast
 
@@ -28,11 +30,6 @@ class SpotifyPkceLoginActivityImpl : AbstractSpotifyPkceLoginActivity() {
         pkceClassBackTo = null
         toast("Authentication has completed. Launching ${classBackTo.simpleName}..")
         startActivity(Intent(this, classBackTo))
-    }
-
-    suspend fun getId(api: SpotifyClientApi) {
-        val user = api.getUserId()
-        toast("Authentication has completed! $user")
     }
 
     override fun onFailure(exception: Exception) {

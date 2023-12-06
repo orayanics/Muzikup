@@ -25,6 +25,7 @@ import com.example.muzikup.Track
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import data.Model
 import data.Review
 import retrofit2.Call
 import retrofit2.Callback
@@ -57,15 +58,22 @@ import retrofit2.converter.gson.GsonConverterFactory
         database = Firebase.database.reference
 
         // Guard clause for valid Spotify API
-        guardValidSpotifyApi(SearchFeedActivity::class.java) { api ->
-            if (!api.isTokenValid(true).isValid) {
-                throw SpotifyException.ReAuthenticationNeededException()
+        try{
+            guardValidSpotifyApi(SearchFeedActivity::class.java) { api ->
+//            val token = Model.credentialStore.spotifyToken
+//                ?: throw SpotifyException.ReAuthenticationNeededException()
+//            val usesPkceAuth = token.refreshToken != null
+                if (!api.isTokenValid(true).isValid) {
+                    throw SpotifyException.ReAuthenticationNeededException()
+                }
+                // go to the whole searchfeed
+                Toast.makeText(this, "User: ${api.getUserId()}", Toast.LENGTH_SHORT).show()
+                setupActivity()
             }
-
-            // go to the whole searchfeed
-            Toast.makeText(this, "User: ${api.getUserId()}", Toast.LENGTH_SHORT).show()
-            setupActivity()
+        } catch (e:Exception){
+            Log.e("launch_spotify", e.toString())
         }
+
     }
 
      private fun setupActivity() {
@@ -125,7 +133,7 @@ import retrofit2.converter.gson.GsonConverterFactory
             }
 
         } catch (e: Exception) {
-            Log.e("launch", e.toString())
+            Log.e("launch_spotify", e.toString())
         }
 
     }
