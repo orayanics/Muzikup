@@ -39,4 +39,49 @@ class FeedActivity : AppCompatActivity() {
         cardView.removeAllViews() // Remove the previous included layout
         cardView.addView(newIncludedLayout)
     }
+
+    // For liking
+    fun likePost(review: Review, username : String) {
+        val reviewRef = database.child("Review").child(review.reviewId.toString())
+
+        // Check if the user has already liked the review
+        reviewRef.child("isLiked").child(username).get().addOnSuccessListener { snapshot ->
+            if (snapshot.exists() && snapshot.value == true) {
+                // User has already liked the review
+                // Handle this scenario as needed
+            } else {
+                // User hasn't liked the review or their like is removed
+
+                // Add the user's like
+                val updateMap = mutableMapOf<String, Any>("isLiked/$username" to true)
+                reviewRef.updateChildren(updateMap)
+
+                // Increment the 'likes' count
+                reviewRef.child("likes").setValue(ServerValue.increment(1))
+            }
+        }.addOnFailureListener {
+            // Handle failure to retrieve like status
+        }
+    }
+
+    fun removeLike(review: Review, username : String) {
+        val updateMap = mutableMapOf<String, Any>("$username" to false)
+        val reviewRef = database.child("Review").child(review.reviewId.toString())
+        reviewRef.child("isLiked").child(username).get().addOnSuccessListener { snapshot ->
+            if (snapshot.exists() && snapshot.value == true) {
+                // Remove the user's like
+                val updateMap = mutableMapOf<String, Any>("isLiked/$username" to false)
+                reviewRef.updateChildren(updateMap)
+
+                // Decrement the 'likes' count
+                reviewRef.child("likes").setValue(ServerValue.increment(-1))
+            } else {
+                // User hasn't liked the review or their like is already removed
+                // Handle this scenario as needed
+            }
+        }.addOnFailureListener {
+            // Handle failure to retrieve like status
+        }
+
+    }
 }
