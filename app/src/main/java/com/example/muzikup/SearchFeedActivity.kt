@@ -22,6 +22,7 @@ import api.TrackResponse
 import auth.guardValidSpotifyApi
 import com.adamratzman.spotify.SpotifyException
 import com.example.muzikup.Track
+import data.Review
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -33,10 +34,26 @@ import retrofit2.converter.gson.GsonConverterFactory
     private lateinit var searchAdapter: SearchAdapter
     private lateinit var searchView: SearchView
     private lateinit var lastFmService: LastFmService
+     private lateinit var auth: FirebaseAuth
+     private lateinit var database: DatabaseReference
+
+     private var review = Review(
+         reviewId = "",
+         track = "",
+         artist = "",
+         content = "",
+         likes = 0,
+         isLiked = mutableMapOf(),
+         username = ""
+     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_post)
+
+        // database
+        auth = Firebase.auth
+        database = Firebase.database.reference
 
         // Guard clause for valid Spotify API
         guardValidSpotifyApi(SearchFeedActivity::class.java) { api ->
@@ -99,7 +116,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 
             // Post Listener
             btnPost.setOnClickListener {
-
+                val content : EditText = findViewById(R.id.postContent)
+                review.content = content.toString();
+                postReview(review)
+                Toast.makeText(this, "Review posted", Toast.LENGTH_SHORT).show()
             }
 
         } catch (e: Exception) {
@@ -110,7 +130,21 @@ import retrofit2.converter.gson.GsonConverterFactory
 
      override fun onItemClick(position: Int, track: String, artist: String) {
          Toast.makeText(this, "$track $artist", Toast.LENGTH_SHORT).show()
+
          val info : TextView = findViewById(R.id.txtInfo)
+         val content : EditText = findViewById(R.id.postContent)
+         // get username
+
+         review = Review(
+             reviewId = database.push().key.toString(),
+             track = track,
+             artist = artist,
+             content = content.toString(),
+             likes = 0,
+             isLiked = mutableMapOf(),
+             username = ""
+         )
+
          info.visibility = View.VISIBLE
          info.text = "$track by $artist"
          val scrollView : ScrollView = findViewById(R.id.scrollPost)
@@ -119,8 +153,8 @@ import retrofit2.converter.gson.GsonConverterFactory
      }
 
      // Post to Firebase
-     private fun postReview() {
-         val content : EditText = findViewById(R.id.postContent)
+     private fun postReview(review : Review) {
+         database.child("Review").child(review.reviewId.toString()).setValue(review)
      }
 
      fun performSearch(query: String) {
