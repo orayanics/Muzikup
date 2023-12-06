@@ -62,17 +62,14 @@ import retrofit2.converter.gson.GsonConverterFactory
                 throw SpotifyException.ReAuthenticationNeededException()
             }
 
-
-
             // go to the whole searchfeed
             Toast.makeText(this, "User: ${api.getUserId()}", Toast.LENGTH_SHORT).show()
-            Log.d("User", "User: ${api.getUserId()}")
             setupActivity()
         }
     }
 
      private fun setupActivity() {
-        //initialize retrofit
+         //initialize retrofit
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
 
