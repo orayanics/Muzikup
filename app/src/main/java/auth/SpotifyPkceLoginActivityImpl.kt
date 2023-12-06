@@ -27,7 +27,13 @@ class SpotifyPkceLoginActivityImpl : AbstractSpotifyPkceLoginActivity() {
         val classBackTo = pkceClassBackTo ?: SearchFeedActivity::class.java
         pkceClassBackTo = null
         toast("Authentication has completed. Launching ${classBackTo.simpleName}..")
+
         startActivity(Intent(this, classBackTo))
+    }
+
+    suspend fun getId(api: SpotifyClientApi) {
+        val user = api.getUserId()
+        toast("Authentication has completed! $user")
     }
 
     override fun onFailure(exception: Exception) {

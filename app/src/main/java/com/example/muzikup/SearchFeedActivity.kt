@@ -22,6 +22,9 @@ import api.TrackResponse
 import auth.guardValidSpotifyApi
 import com.adamratzman.spotify.SpotifyException
 import com.example.muzikup.Track
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import data.Review
 import retrofit2.Call
 import retrofit2.Callback
@@ -34,7 +37,6 @@ import retrofit2.converter.gson.GsonConverterFactory
     private lateinit var searchAdapter: SearchAdapter
     private lateinit var searchView: SearchView
     private lateinit var lastFmService: LastFmService
-     private lateinit var auth: FirebaseAuth
      private lateinit var database: DatabaseReference
 
      private var review = Review(
@@ -52,7 +54,6 @@ import retrofit2.converter.gson.GsonConverterFactory
         setContentView(R.layout.activity_post)
 
         // database
-        auth = Firebase.auth
         database = Firebase.database.reference
 
         // Guard clause for valid Spotify API

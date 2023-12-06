@@ -7,9 +7,14 @@ import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ServerValue
+import data.Review
 
 
 class FeedActivity : AppCompatActivity() {
+    private lateinit var database: DatabaseReference
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_feed)
