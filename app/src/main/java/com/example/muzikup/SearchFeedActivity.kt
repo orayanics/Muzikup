@@ -1,25 +1,32 @@
 package com.example.muzikup
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.StrictMode
 import android.util.Log
 import android.view.View
+import android.view.Window
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import api.LastFmService
 import api.SearchResponse
+import api.TrackResponse
 import auth.guardValidSpotifyApi
+import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.SpotifyException
+import com.example.muzikup.Track
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import data.Model
 import data.Review
 import retrofit2.Call
 import retrofit2.Callback
@@ -29,9 +36,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 
  class SearchFeedActivity : AppCompatActivity(), SearchAdapter.OnItemClickListener{
      private lateinit var trackRecyclerView: RecyclerView
-     private lateinit var searchAdapter: SearchAdapter
-     private lateinit var searchView: SearchView
-     private lateinit var lastFmService: LastFmService
+    private lateinit var searchAdapter: SearchAdapter
+    private lateinit var searchView: SearchView
+    private lateinit var lastFmService: LastFmService
      private lateinit var database: DatabaseReference
 
      private var review = Review(
@@ -50,27 +57,19 @@ import retrofit2.converter.gson.GsonConverterFactory
 
         // database
         database = Firebase.database.reference
-
+        setupActivity()
         // Guard clause for valid Spotify API
-        try{
-            guardValidSpotifyApi(SearchFeedActivity::class.java) { api ->
-//            val token = Model.credentialStore.spotifyToken
-//                ?: throw SpotifyException.ReAuthenticationNeededException()
-//            val usesPkceAuth = token.refreshToken != null
-                if (!api.isTokenValid(true).isValid) {
-                    throw SpotifyException.ReAuthenticationNeededException()
-                }
-                // go to the whole searchfeed
-                Toast.makeText(this, "User: ${api.getUserId()}", Toast.LENGTH_SHORT).show()
-                setupActivity()
-            }
-        } catch (e:Exception){
-            Log.e("launch_spotify", e.toString())
-
-
-            // go to the whole searchfeed
-        }
-
+//            guardValidSpotifyApi(SearchFeedActivity::class.java) { api ->
+//                if (!api.isTokenValid(true).isValid) {
+//                    throw SpotifyException.ReAuthenticationNeededException()
+//                }
+//                else {
+//
+//                }
+//                // go to the whole searchfeed
+//
+//                setupActivity()
+//            }
     }
 
      private fun setupActivity() {
@@ -86,7 +85,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 
         lastFmService = retrofit.create(LastFmService::class.java)
 
-        try{
             // Initialize RecyclerView and adapters
             trackRecyclerView = findViewById(R.id.recyclerViewTracks)
             trackRecyclerView.layoutManager = LinearLayoutManager(this)
@@ -124,14 +122,15 @@ import retrofit2.converter.gson.GsonConverterFactory
             // Post Listener
             btnPost.setOnClickListener {
                 val content : EditText = findViewById(R.id.postContent)
-                review.content = content.toString();
-                postReview(review)
-                Toast.makeText(this, "Review posted", Toast.LENGTH_SHORT).show()
+                if(!content.text.toString().isNullOrEmpty()){
+                    review.content = content.toString();
+                    postReview(review)
+                    showToast("Review posted")
+                    Toast.makeText(this, "Review posted", Toast.LENGTH_SHORT).show()
+                } else {
+                    showToast("Review cannot be empty")
+                }
             }
-
-        } catch (e: Exception) {
-            Log.e("launch_spotify", e.toString())
-        }
 
     }
 
@@ -161,7 +160,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
      // Post to Firebase
      private fun postReview(review : Review) {
-         database.child("Review").child(review.reviewId.toString()).setValue(review)
+         database.child("Review").child(review.reviewId).setValue(review)
      }
 
      fun performSearch(query: String) {
@@ -178,7 +177,6 @@ import retrofit2.converter.gson.GsonConverterFactory
                     //validation
                     val jsonString = response.body()?.toString()
                     Log.d("JSONResponse", jsonString ?: "Response body is null")
-
 
                     val searchResponse = response.body()
                     val searchResults = searchResponse?.results?.trackmatches?.track
@@ -200,9 +198,7 @@ import retrofit2.converter.gson.GsonConverterFactory
                 }
             }
 
-            private fun showToast(message: String) {
-                Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
-            }
+
 
             override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
                 // Handle failure
@@ -210,5 +206,8 @@ import retrofit2.converter.gson.GsonConverterFactory
             }
         })
     }
+     private fun showToast(message: String) {
+         Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
+     }
 
  }
