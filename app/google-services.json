@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "74711038552",
+    "project_id": "muzikup-37ddb",
+    "storage_bucket": "muzikup-37ddb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:74711038552:android:6b4a6dc230856556f2282d",
+        "android_client_info": {
+          "package_name": "com.example.muzikup"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDNu0e-F7M67J9Z3y2cU-KxCY0RUBesbHY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
