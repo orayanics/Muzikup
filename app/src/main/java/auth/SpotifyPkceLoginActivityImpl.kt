@@ -11,18 +11,14 @@ import com.adamratzman.spotify.auth.pkce.AbstractSpotifyPkceLoginActivity
 import com.example.muzikup.BuildConfig
 import com.example.muzikup.SearchFeedActivity
 import com.example.muzikup.SpotifyPlaygroundApplication
-import data.UserProfile
+import api.UserProfile
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
-import utils.safeLet
-import utils.toast
 import utils.safeLet
 import utils.toast
 
