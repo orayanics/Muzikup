@@ -22,13 +22,23 @@ class SpotifyPkceLoginActivityImpl : AbstractSpotifyPkceLoginActivity() {
         val model = (application as SpotifyPlaygroundApplication).model
         model.credentialStore.setSpotifyApi(api)
         val classBackTo = pkceClassBackTo ?: SearchFeedActivity::class.java
-        pkceClassBackTo = null
+        resetStateForNewUser()
+       // pkceClassBackTo = null
         toast("Authentication has completed. Launching ${classBackTo.simpleName}..")
 
         startActivity(Intent(this, classBackTo))
     }
 
-    suspend fun getId(api: SpotifyClientApi) {
+    private fun resetStateForNewUser() {
+        // Reset any state related to the previous user
+        pkceClassBackTo = null
+
+        // Clear existing tokens and set the credential store to a clean state
+//        val model = (application as SpotifyPlaygroundApplication).model
+//        model.credentialStore.clear()
+    }
+
+     suspend fun getId(api: SpotifyClientApi) {
         val user = api.getUserId()
         toast("Authentication has completed! $user")
     }

@@ -1,31 +1,25 @@
 package com.example.muzikup
 
-import android.content.Intent
 import android.os.Bundle
 import android.os.StrictMode
 import android.util.Log
 import android.view.View
-import android.view.Window
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import api.LastFmService
 import api.SearchResponse
-import api.TrackResponse
 import auth.guardValidSpotifyApi
 import com.adamratzman.spotify.SpotifyException
-import com.example.muzikup.Track
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import data.Model
 import data.Review
 import retrofit2.Call
 import retrofit2.Callback
@@ -35,9 +29,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 
  class SearchFeedActivity : AppCompatActivity(), SearchAdapter.OnItemClickListener{
      private lateinit var trackRecyclerView: RecyclerView
-    private lateinit var searchAdapter: SearchAdapter
-    private lateinit var searchView: SearchView
-    private lateinit var lastFmService: LastFmService
+     private lateinit var searchAdapter: SearchAdapter
+     private lateinit var searchView: SearchView
+     private lateinit var lastFmService: LastFmService
      private lateinit var database: DatabaseReference
 
      private var review = Review(
@@ -70,14 +64,11 @@ import retrofit2.converter.gson.GsonConverterFactory
                 Toast.makeText(this, "User: ${api.getUserId()}", Toast.LENGTH_SHORT).show()
                 setupActivity()
             }
-<<<<<<< HEAD
         } catch (e:Exception){
             Log.e("launch_spotify", e.toString())
-=======
+
 
             // go to the whole searchfeed
-            setupActivity()
->>>>>>> parent of 2b3091b (stuff)
         }
 
     }
