@@ -70,14 +70,20 @@ import retrofit2.converter.gson.GsonConverterFactory
                 Toast.makeText(this, "User: ${api.getUserId()}", Toast.LENGTH_SHORT).show()
                 setupActivity()
             }
+<<<<<<< HEAD
         } catch (e:Exception){
             Log.e("launch_spotify", e.toString())
+=======
+
+            // go to the whole searchfeed
+            setupActivity()
+>>>>>>> parent of 2b3091b (stuff)
         }
 
     }
 
      private fun setupActivity() {
-         //initialize retrofit
+        //initialize retrofit
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
 
