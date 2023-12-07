@@ -1,32 +1,26 @@
 package com.example.muzikup
 
-import android.content.Intent
 import android.os.Bundle
 import android.os.StrictMode
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
-import android.view.Window
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import api.LastFmService
 import api.SearchResponse
-import api.TrackResponse
-import auth.guardValidSpotifyApi
-import com.adamratzman.spotify.SpotifyClientApi
-import com.adamratzman.spotify.SpotifyException
-import com.example.muzikup.Track
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import data.Model
 import data.Review
 import retrofit2.Call
 import retrofit2.Callback
@@ -57,7 +51,16 @@ import retrofit2.converter.gson.GsonConverterFactory
 
         // database
         database = Firebase.database.reference
+
+        // Load in navbar based on role
+        identifyAccess("USER")
+        val btnAdd : ImageView = findViewById(R.id.btnAdd)
+        btnAdd.setImageResource(R.drawable.add_fill)
+
+        // Start Post Activity
         setupActivity()
+
+
         // Guard clause for valid Spotify API
 //            guardValidSpotifyApi(SearchFeedActivity::class.java) { api ->
 //                if (!api.isTokenValid(true).isValid) {
@@ -77,7 +80,6 @@ import retrofit2.converter.gson.GsonConverterFactory
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
 
-        val key = "a863ec62a3b501170c759fc562a79267"
         val retrofit = Retrofit.Builder()
             .baseUrl("http://ws.audioscrobbler.com/2.0/")
             .addConverterFactory(GsonConverterFactory.create())
@@ -122,8 +124,8 @@ import retrofit2.converter.gson.GsonConverterFactory
             // Post Listener
             btnPost.setOnClickListener {
                 val content : EditText = findViewById(R.id.postContent)
-                if(!content.text.toString().isNullOrEmpty()){
-                    review.content = content.toString();
+                if(content.text.toString().isNotEmpty()){
+                    review.content = content.toString()
                     postReview(review)
                     showToast("Review posted")
                     Toast.makeText(this, "Review posted", Toast.LENGTH_SHORT).show()
@@ -160,7 +162,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
      // Post to Firebase
      private fun postReview(review : Review) {
-         database.child("Review").child(review.reviewId).setValue(review)
+         review.reviewId?.let { database.child("Review").child(it).setValue(review) }
      }
 
      fun performSearch(query: String) {
@@ -180,7 +182,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
                     val searchResponse = response.body()
                     val searchResults = searchResponse?.results?.trackmatches?.track
-                    if (searchResults != null && searchResults.isNotEmpty()) {
+                    if (!searchResults.isNullOrEmpty()) {
                         // Update the adapter with the received search results
                         searchAdapter.updateData(searchResults)
                         Log.d("SearchResults", "Number of results: ${searchResults.size}")
@@ -198,16 +200,32 @@ import retrofit2.converter.gson.GsonConverterFactory
                 }
             }
 
-
-
             override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
                 // Handle failure
                 Log.e("APIFailure", "Error: ${t.message}")
             }
         })
     }
+
      private fun showToast(message: String) {
          Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
+     }
+
+     private fun identifyAccess(access : String){
+         val cardView : CardView = findViewById(R.id.footerId)
+
+         val layoutResId: Int = if (access == "USER") {
+             // return 1
+             R.layout.footer_user
+         } else {
+             // return 0
+             R.layout.footer_admin
+         }
+         // Inflate and replace the included layout
+         val inflater = LayoutInflater.from(this)
+         val newIncludedLayout = inflater.inflate(layoutResId, cardView, false)
+         cardView.removeAllViews() // Remove the previous included layout
+         cardView.addView(newIncludedLayout)
      }
 
  }
