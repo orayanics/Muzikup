@@ -8,6 +8,9 @@
       <entry key="SearchFeedActivity">
         <State />
       </entry>
+      <entry key="SpotifyPkceLoginActivityImpl">
+        <State />
+      </entry>
       <entry key="app">
         <State />
       </entry>

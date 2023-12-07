@@ -124,8 +124,9 @@ import retrofit2.converter.gson.GsonConverterFactory
             // Post Listener
             btnPost.setOnClickListener {
                 val content : EditText = findViewById(R.id.postContent)
-                if(content.text.toString().isNotEmpty()){
-                    review.content = content.toString()
+                val isContent = content.text.toString()
+                if(isContent.isNotEmpty()){
+                    review.content = isContent
                     postReview(review)
                     showToast("Review posted")
                     Toast.makeText(this, "Review posted", Toast.LENGTH_SHORT).show()

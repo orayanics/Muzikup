@@ -3,6 +3,7 @@ package com.example.muzikup
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
@@ -18,7 +19,7 @@ import com.google.firebase.ktx.Firebase
 import data.Review
 
 
-class FeedActivity : AppCompatActivity() {
+class FeedActivity : AppCompatActivity(), FeedAdapter.OnItemClickListener {
     private lateinit var database: DatabaseReference
     private lateinit var recyclerView: RecyclerView
     private lateinit var feedAdapter: FeedAdapter
@@ -36,14 +37,23 @@ class FeedActivity : AppCompatActivity() {
             recyclerView.layoutManager = LinearLayoutManager(this)
             database = Firebase.database.reference
 
-            database.addValueEventListener(object : ValueEventListener {
+            database.child("Review").addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     val feedResults = mutableListOf<Review>()
                     for (snapshot in dataSnapshot.children) {
                         val feedItem = snapshot.getValue(Review::class.java)
                         feedItem?.let { feedResults.add(it) }
                     }
-                    feedAdapter = FeedAdapter(feedResults)
+                    feedAdapter = FeedAdapter(feedResults, object : FeedAdapter.OnItemClickListener {
+                        override fun onItemClick(position: Int, review: Review) {
+                            val btnLike : ImageButton = findViewById(R.id.btnHeart)
+                            btnLike.setOnClickListener {
+                                likePost(review, "sample")
+                            }
+                            // Handle item click
+                            Log.d("RecyclerView", "Item clicked at position $position with reviewId ${review.reviewId}")
+                        }
+                    })
                     recyclerView.adapter = feedAdapter
                 }
 
@@ -52,6 +62,7 @@ class FeedActivity : AppCompatActivity() {
                     Log.e("Firebase", "Error getting data", databaseError.toException())
                 }
             })
+
         } catch (e : Exception){
             Log.e("Firebase", e.toString())
         }
@@ -117,5 +128,12 @@ class FeedActivity : AppCompatActivity() {
             // Handle failure to retrieve like status
         }
 
+    }
+
+    override fun onItemClick(position: Int, review: Review) {
+        val btnLike : ImageButton = findViewById(R.id.btnHeart)
+        btnLike.setOnClickListener {
+            likePost(review, "sample")
+        }
     }
 }
