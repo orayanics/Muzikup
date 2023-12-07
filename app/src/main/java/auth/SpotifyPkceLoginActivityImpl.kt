@@ -44,17 +44,25 @@ class SpotifyPkceLoginActivityImpl : AbstractSpotifyPkceLoginActivity() {
         try {
             val userPrivate: SpotifyUserInformation = api.users.getClientProfile()
             val userId = userPrivate.id
-
+            Log.d("loginerror", "User's ID: $userId")
+            val email = userPrivate.email
             Log.d("loginerror", "User's ID: $userId")
 
-            toast("User's ID: $userId\n")
+            // Fetch user's private information (including email and profile picture)
+//            val userPrivate: SpotifyUserInformation = api.users.getClientProfile()
+//            val email = userPrivate.email
+//            val profilePictureUrl = userPrivate.images?.firstOrNull()?.url
+//
+//            Log.d("loginerror", "User's Email: $email")
+//            Log.d("loginerror", "Profile Picture URL: $profilePictureUrl")
+//
+//            toast("User's ID: $userId\nUser's Email: $email\nProfile Picture URL: $profilePictureUrl")
         } catch (e: Exception) {
             e.printStackTrace()
             Log.d("loginerror", "API Error: ${e.message}.")
             toast("Error fetching user information: ${e.message}")
         }
     }
-
 
     override fun onFailure(exception: Exception) {
         exception.printStackTrace()
