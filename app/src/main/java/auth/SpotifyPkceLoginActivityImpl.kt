@@ -6,6 +6,7 @@ import android.util.Log
 import com.adamratzman.spotify.SpotifyClientApi
 import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.auth.pkce.AbstractSpotifyPkceLoginActivity
+import com.adamratzman.spotify.models.SpotifyUserInformation
 import com.example.muzikup.BuildConfig
 import com.example.muzikup.SearchFeedActivity
 import com.example.muzikup.SpotifyPlaygroundApplication
@@ -41,16 +42,12 @@ class SpotifyPkceLoginActivityImpl : AbstractSpotifyPkceLoginActivity() {
     }
     private suspend fun getId(api: SpotifyClientApi) {
         try {
-            val userId = api.users.getClientProfile().id
-           // val userId = userPrivate.id
-            //val email = userPrivate.email
-            //val profilePictureUrl = userPrivate.images?.firstOrNull()?.url
+            val userPrivate: SpotifyUserInformation = api.users.getClientProfile()
+            val userId = userPrivate.id
 
             Log.d("loginerror", "User's ID: $userId")
-          //  Log.d("loginerror", "User's Email: $email")
-           // Log.d("loginerror", "Profile Picture URL: $profilePictureUrl")
 
-            toast("User's ID: $userId\nUser's Email: ")
+            toast("User's ID: $userId\n")
         } catch (e: Exception) {
             e.printStackTrace()
             Log.d("loginerror", "API Error: ${e.message}.")
