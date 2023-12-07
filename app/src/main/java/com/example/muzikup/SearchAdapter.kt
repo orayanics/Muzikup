@@ -15,7 +15,6 @@ class SearchAdapter(
     private val listener: OnItemClickListener
 ) :
     RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
-
     inner class SearchViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), OnClickListener {
         val trackName: TextView = itemView.findViewById(R.id.textViewTrackName)
         val artistName: TextView = itemView.findViewById(R.id.textViewArtistName)
