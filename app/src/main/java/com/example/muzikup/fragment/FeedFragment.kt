@@ -1,15 +1,17 @@
-package com.example.muzikup
+package com.example.muzikup.fragment
 
 import android.os.Bundle
 import android.util.Log
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.widget.Button
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.muzikup.FeedAdapter
+import com.example.muzikup.R
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -19,71 +21,54 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import data.Review
 
+class FeedFragment : Fragment() {
 
-class FeedActivity : AppCompatActivity(), FeedAdapter.OnItemClickListener {
     private lateinit var database: DatabaseReference
     private lateinit var recyclerView: RecyclerView
     private lateinit var feedAdapter: FeedAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_feed)
+    }
 
-        identifyAccess("USER")
-        val btnHome : ImageView = findViewById(R.id.footerHome)
-        btnHome.setImageResource(R.drawable.home_fill)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View? {
+        val view = inflater.inflate(R.layout.fragment_feed, container, false)
 
-        try {
-            recyclerView = findViewById(R.id.feedRecycler)
-            recyclerView.layoutManager = LinearLayoutManager(this)
-            database = Firebase.database.reference
+        // Initialize UI elements and set up database reference
+        recyclerView = view.findViewById(R.id.feedRecycler)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        database = Firebase.database.reference
 
-            database.child("Review").addValueEventListener(object : ValueEventListener {
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val feedResults = mutableListOf<Review>()
-                    for (snapshot in dataSnapshot.children) {
-                        val feedItem = snapshot.getValue(Review::class.java)
-                        feedItem?.let { feedResults.add(it) }
+        // Retrieve and display review data
+        database.child("Review").addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val feedResults = mutableListOf<Review>()
+                for (snapshot in dataSnapshot.children) {
+                    val feedItem = snapshot.getValue(Review::class.java)
+                    feedItem?.let { feedResults.add(it) }
+                }
+                feedAdapter = FeedAdapter(feedResults, object : FeedAdapter.OnItemClickListener {
+                    override fun onItemClick(position: Int, review: Review) {
+                        // Handle item click
+                        likePost(review, "sample")
+                        Log.d("RecyclerView", "Item clicked at position $position with reviewId ${review.reviewId}")
                     }
-                    feedAdapter = FeedAdapter(feedResults, object : FeedAdapter.OnItemClickListener {
-                        override fun onItemClick(position: Int, review: Review) {
-                            // Handle item click
-                            // TO DO: get username and replace
-                            likePost(review, "sample")
-                            Log.d("RecyclerView", "Item clicked at position $position with reviewId ${review.reviewId}")
-                        }
-                    })
-                    recyclerView.adapter = feedAdapter
-                }
+                })
+                recyclerView.adapter = feedAdapter
+            }
 
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.e("Firebase", "Error getting data", databaseError.toException())
+            }
+        })
 
-                override fun onCancelled(databaseError: DatabaseError) {
-                    Log.e("Firebase", "Error getting data", databaseError.toException())
-                }
-            })
-
-        } catch (e : Exception){
-            Log.e("Firebase", e.toString())
-        }
-
+        return view
     }
 
-    private fun identifyAccess(access : String){
-        val cardView : CardView = findViewById(R.id.footerId)
-        val layoutResId: Int = if (access == "USER") {
-            // return 1
-            R.layout.footer_user
-        } else {
-            // return 0
-            R.layout.footer_admin
-        }
-        // Inflate and replace the included layout
-        val inflater = LayoutInflater.from(this)
-        val newIncludedLayout = inflater.inflate(layoutResId, cardView, false)
-        cardView.removeAllViews() // Remove the previous included layout
-        cardView.addView(newIncludedLayout)
-    }
-
+    // Other functions
     // For liking
     fun likePost(review: Review, username : String) {
         val reviewRef = review.reviewId?.let { database.child("Review").child(it) }
@@ -129,12 +114,5 @@ class FeedActivity : AppCompatActivity(), FeedAdapter.OnItemClickListener {
             // Handle failure to retrieve like status
         }
 
-    }
-
-    override fun onItemClick(position: Int, review: Review) {
-        val btnLike : ImageButton = findViewById(R.id.btnHeart)
-        btnLike.setOnClickListener {
-            likePost(review, "sample")
-        }
     }
 }

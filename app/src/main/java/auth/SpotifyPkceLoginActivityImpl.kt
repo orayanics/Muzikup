@@ -8,6 +8,8 @@ import com.adamratzman.spotify.SpotifyScope
 import com.adamratzman.spotify.auth.pkce.AbstractSpotifyPkceLoginActivity
 import com.adamratzman.spotify.models.SpotifyUserInformation
 import com.example.muzikup.BuildConfig
+import com.example.muzikup.FeedActivity
+import com.example.muzikup.MainActivity
 import com.example.muzikup.SearchFeedActivity
 import com.example.muzikup.SpotifyPlaygroundApplication
 import kotlinx.coroutines.CoroutineScope
@@ -27,7 +29,7 @@ class SpotifyPkceLoginActivityImpl : AbstractSpotifyPkceLoginActivity() {
     override fun onSuccess(api: SpotifyClientApi) {
         val model = (application as SpotifyPlaygroundApplication).model
         model.credentialStore.setSpotifyApi(api)
-        val classBackTo = pkceClassBackTo ?: SearchFeedActivity::class.java
+        val classBackTo = pkceClassBackTo ?: MainActivity::class.java
         pkceClassBackTo = null
         toast("Authentication has completed. Launching ${classBackTo.simpleName}..")
 

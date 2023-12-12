@@ -60,19 +60,6 @@ import retrofit2.converter.gson.GsonConverterFactory
         // Start Post Activity
         setupActivity()
 
-
-        // Guard clause for valid Spotify API
-//            guardValidSpotifyApi(SearchFeedActivity::class.java) { api ->
-//                if (!api.isTokenValid(true).isValid) {
-//                    throw SpotifyException.ReAuthenticationNeededException()
-//                }
-//                else {
-//
-//                }
-//                // go to the whole searchfeed
-//
-//                setupActivity()
-//            }
     }
 
      private fun setupActivity() {
@@ -174,7 +161,7 @@ import retrofit2.converter.gson.GsonConverterFactory
             override fun onResponse(call: Call<SearchResponse>, response: Response<SearchResponse>) {
                 Log.d("APIResponse", "API Link: ${response.body()}")
                 Log.d("APIResponse", "Code: ${response.code()}")
-                Log.d("APIResponse", "Body: ${response.body()}")
+                Log.d("APIRespossnse", "Body: ${response.body()}")
                 if (response.isSuccessful) {
 
                     //validation

@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".SpotifyPlaygroundApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -14,49 +15,51 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Muzikup"
         android:usesCleartextTraffic="true"
-        tools:targetApi="33"
-        android:name=".SpotifyPlaygroundApplication">
-
+        tools:targetApi="33">
+        <activity
+            android:name=".MainActivity"
+            android:exported="true" />
         <activity
             android:name=".SearchFeedActivity"
-            android:exported="true">
-        </activity>
-
+            android:exported="true"></activity>
         <activity
             android:name=".FeedActivity"
             android:exported="true" />
-
         <activity
             android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".RegisterActivity"
             android:exported="true" />
-
-        <activity android:name="auth.SpotifyPkceLoginActivityImpl"
-            android:launchMode="singleTop" android:exported="true">
+        <activity
+            android:name="auth.SpotifyPkceLoginActivityImpl"
+            android:exported="true"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="spotifyandroidplayground" android:host="spotify-pkce" />
+                <data
+                    android:host="spotify-pkce"
+                    android:scheme="spotifyandroidplayground" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="com.spotify.sdk.android.auth.LoginActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" android:exported="true">
-
+            android:exported="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
             <intent-filter>
-                <data android:scheme="spotifyandroidplayground" android:host="spotify-auth" />
+                <data
+                    android:host="spotify-auth"
+                    android:scheme="spotifyandroidplayground" />
             </intent-filter>
         </activity>
 
