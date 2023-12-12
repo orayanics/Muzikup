@@ -67,6 +67,10 @@
                     android:text="Artist" />
             </LinearLayout>
 
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="10dp" />
+
             <TextView
                 android:id="@+id/feedContent"
                 android:layout_width="wrap_content"
@@ -75,6 +79,10 @@
                 android:justificationMode="inter_word"
                 android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
                 android:textColor="@color/white" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="10dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -99,12 +107,44 @@
                     android:text="Level" />
             </LinearLayout>
 
-            <ImageButton
-                android:id="@+id/btnHeart"
-                android:layout_width="wrap_content"
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="10dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@drawable/heart_nofill"
-                android:background="@null"/>
+                android:orientation="horizontal"
+                android:background="@null"
+                android:backgroundTint="@null">
+
+                <ImageButton
+                    android:id="@+id/btnHeart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/heart_nofill"
+                    android:background="@null"/>
+
+                <Space
+                    android:layout_width="15dp"
+                    android:layout_height="0dp"/>
+
+                <TextView
+                    android:id="@+id/countLikes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:background="@null"
+                    android:backgroundTint="@null"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" Likes"
+                    android:background="@null"
+                    android:backgroundTint="@null"/>
+            </LinearLayout>
+
 
         </LinearLayout>
     </LinearLayout>

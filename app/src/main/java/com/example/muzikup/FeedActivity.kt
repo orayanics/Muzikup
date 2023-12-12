@@ -3,6 +3,7 @@ package com.example.muzikup
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
@@ -46,11 +47,8 @@ class FeedActivity : AppCompatActivity(), FeedAdapter.OnItemClickListener {
                     }
                     feedAdapter = FeedAdapter(feedResults, object : FeedAdapter.OnItemClickListener {
                         override fun onItemClick(position: Int, review: Review) {
-                            val btnLike : ImageButton = findViewById(R.id.btnHeart)
-                            btnLike.setOnClickListener {
-                                likePost(review, "sample")
-                            }
                             // Handle item click
+                            likePost(review, "sample")
                             Log.d("RecyclerView", "Item clicked at position $position with reviewId ${review.reviewId}")
                         }
                     })
@@ -92,6 +90,8 @@ class FeedActivity : AppCompatActivity(), FeedAdapter.OnItemClickListener {
         // Check if the user has already liked the review
         reviewRef?.child("isLiked")?.child(username)?.get()?.addOnSuccessListener { snapshot ->
             if (snapshot.exists() && snapshot.value == true) {
+                removeLike(review, username)
+                Log.d("RecyclerView", "Item is unliked with reviewId ${review.reviewId}")
                 // User has already liked the review
                 // Handle this scenario as needed
             } else {
@@ -100,9 +100,9 @@ class FeedActivity : AppCompatActivity(), FeedAdapter.OnItemClickListener {
                 // Add the user's like
                 val updateMap = mutableMapOf<String, Any>("isLiked/$username" to true)
                 reviewRef.updateChildren(updateMap)
-
                 // Increment the 'likes' count
                 reviewRef.child("likes").setValue(ServerValue.increment(1))
+                Log.d("RecyclerView", "Item is liked with reviewId ${review.reviewId}")
             }
         }?.addOnFailureListener {
             // Handle failure to retrieve like status

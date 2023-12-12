@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import data.Review
@@ -15,15 +16,33 @@ class FeedAdapter(
 ) : RecyclerView.Adapter<FeedAdapter.FeedViewHolder>() {
 
    inner class FeedViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), OnClickListener {
+       private val titleTextView: TextView = itemView.findViewById(R.id.feedTitle)
+       private val artistTextView: TextView = itemView.findViewById(R.id.feedArtist)
+       private val contentTextView: TextView = itemView.findViewById(R.id.feedContent)
+       private val likeButton: ImageButton = itemView.findViewById(R.id.btnHeart)
+       private val likeCount : TextView = itemView.findViewById(R.id.countLikes)
+
        fun bind(feedItem: Review) {
-            try{
-                itemView.findViewById<TextView>(R.id.feedTitle).text = feedItem.track.toString()
-                itemView.findViewById<TextView>(R.id.feedArtist).text = feedItem.artist.toString()
-                itemView.findViewById<TextView>(R.id.feedContent).text = feedItem.content.toString()
-            } catch (e: Exception){
-                Log.e("Firebase", e.toString())
-            }
-        }
+           titleTextView.text = feedItem.track.toString()
+           artistTextView.text = feedItem.artist.toString()
+           contentTextView.text = feedItem.content.toString()
+
+           likeButton.setOnClickListener {
+               val position = adapterPosition
+               if (position != RecyclerView.NO_POSITION) {
+                   val reviewId = feedResults[position]
+                   listener.onItemClick(position, reviewId)
+               }
+           }
+
+           likeCounter(feedItem)
+       }
+
+       private fun likeCounter(feedItem: Review) {
+           // Get the like count from your Review object or Firebase Database and set it to the TextView
+           val count = feedItem.likes // Replace 'likes' with the appropriate field in your Review object
+           likeCount.text = count.toString()
+       }
 
        init {
            itemView.setOnClickListener(this)
