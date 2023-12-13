@@ -11,6 +11,9 @@
       <entry key="SearchFeedActivity">
         <State />
       </entry>
+      <entry key="SplashActivity">
+        <State />
+      </entry>
       <entry key="SpotifyPkceLoginActivityImpl">
         <State />
       </entry>
