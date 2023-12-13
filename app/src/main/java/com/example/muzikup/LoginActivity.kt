@@ -17,7 +17,6 @@ class LoginActivity : AppCompatActivity() {
 
         btnLogin.setOnClickListener {
             onConnectSpotifyPKCEClick()
-
         }
     }
 

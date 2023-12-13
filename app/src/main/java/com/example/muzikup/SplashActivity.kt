@@ -5,6 +5,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.widget.VideoView
 import androidx.appcompat.app.AppCompatActivity
+import auth.SpotifyPkceLoginActivityImpl
+import com.adamratzman.spotify.auth.pkce.startSpotifyClientPkceLoginActivity
 
 
 class SplashActivity : AppCompatActivity() {
@@ -19,9 +21,10 @@ class SplashActivity : AppCompatActivity() {
 
         video.setOnCompletionListener {
             // Replace MainActivity.class with the activity you want to navigate to after splash screen
-            val intent = Intent(this@SplashActivity, MainActivity::class.java)
+            //startSpotifyClientPkceLoginActivity(SpotifyPkceLoginActivityImpl::class.java)
+            val intent = Intent(this@SplashActivity, LoginActivity::class.java)
             startActivity(intent)
-            finish() // Finish the splash screen activity
+            finish()
         }
     }
 }
