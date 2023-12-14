@@ -2,6 +2,7 @@ package com.example.muzikup
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
@@ -18,6 +19,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         setFragment(FeedFragment())
+
 
         // ICONS
         val btnHome : ImageView = findViewById(R.id.footerHome)
@@ -49,7 +51,10 @@ class MainActivity : AppCompatActivity() {
             btnAdd.setImageResource(R.drawable.add_nofill)
             btnHome.setImageResource(R.drawable.home_nofill)
             btnProfile.setImageResource(R.drawable.profile_fill)
-            setFragment(HomeFragment())
+            val homeFragment = HomeFragment()
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer, homeFragment)
+                .commit()
 
         }
     }
@@ -67,4 +72,5 @@ class MainActivity : AppCompatActivity() {
         // Commit the transaction
         fragmentTransaction.commit()
     }
+
 }
