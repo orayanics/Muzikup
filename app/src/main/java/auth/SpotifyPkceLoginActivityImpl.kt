@@ -23,7 +23,7 @@ class SpotifyPkceLoginActivityImpl : AbstractSpotifyPkceLoginActivity() {
     override val clientId = BuildConfig.SPOTIFY_CLIENT_ID
     override val redirectUri = BuildConfig.SPOTIFY_REDIRECT_URI_PKCE
     //override val scopes = SpotifyScope.values().toList()
-    override val scopes = (SpotifyScope.values() + SpotifyScope.USER_READ_EMAIL + SpotifyScope.USER_READ_PRIVATE).toList()
+    override val scopes = (SpotifyScope.entries + SpotifyScope.USER_READ_EMAIL + SpotifyScope.USER_READ_PRIVATE).toList()
 
 
     override fun onSuccess(api: SpotifyClientApi) {
@@ -44,17 +44,13 @@ class SpotifyPkceLoginActivityImpl : AbstractSpotifyPkceLoginActivity() {
     }
     private suspend fun getId(api: SpotifyClientApi) {
         try {
-//            val userPrivate: SpotifyUserInformation = api.users.getClientProfile()
-//            val userId = userPrivate.id
-//            Log.d("login", "User's ID: $userId")
 
             //Fetch user's private information (including email and profile picture)
             val userPrivate: SpotifyUserInformation = api.users.getClientProfile()
-            val userId = userPrivate.id
+            val userId = userPrivate.displayName
             val email = userPrivate.email
             val profilePictureUrl = userPrivate.images?.firstOrNull()?.url
 
-            Log.d("login", "User's Email: $email")
             Log.d("login", "Profile Picture URL: $profilePictureUrl")
 
             toast("User's ID: $userId\nUser's Email: $email\nProfile Picture URL: $profilePictureUrl")

@@ -6,5 +6,6 @@ data class Track(
     @SerializedName("name") val name: String,
     @SerializedName("url") val url: String,
     @SerializedName("artist") val artist: String,
-    @SerializedName("album") val album: Album
+    @SerializedName("album") val album: Album,
+    @SerializedName("image") val images: List<Image>
 )

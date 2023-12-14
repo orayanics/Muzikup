@@ -103,6 +103,7 @@ dependencies {
     //ui control
     implementation("com.google.accompanist:accompanist-swiperefresh:0.23.1")
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.23.1")
+    implementation ("com.squareup.picasso:picasso:2.71828")
 
 
     //build window (can remove later)

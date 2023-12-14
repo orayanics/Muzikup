@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import api.LastFmService
 import api.SearchResponse
+import com.adamratzman.spotify.utils.Language
 import com.example.muzikup.R
 import com.example.muzikup.SearchAdapter
 import com.google.firebase.Firebase
@@ -146,7 +147,7 @@ class AddPostFragment : Fragment(), SearchAdapter.OnItemClickListener {
             val content: EditText = requireView().findViewById(R.id.postContent)
 
             // get username
-
+            retrieveLastFmImage(track, artist) { imageUrl ->
             review = Review(
                 reviewId = database.push().key.toString(),
                 track = track,
@@ -154,14 +155,17 @@ class AddPostFragment : Fragment(), SearchAdapter.OnItemClickListener {
                 content = content.text.toString(),  // Use text property directly
                 likes = 0,
                 isLiked = mutableMapOf(),
-                username = ""
+                username = "",
+                image = imageUrl
             )
 
             info.visibility = View.VISIBLE
             info.text = "$track by $artist"
             val scrollView: ScrollView = requireView().findViewById(R.id.scrollPost)
             scrollView.visibility = View.GONE
+
             searchAdapter.notifyItemChanged(position)
+        }
         } catch (e : Exception){
             Log.e("RecyclerView", e.toString())
         }
@@ -216,5 +220,34 @@ class AddPostFragment : Fragment(), SearchAdapter.OnItemClickListener {
     private fun showToast(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
+    private fun retrieveLastFmImage(track: String, artist: String, callback: (String) -> Unit) {
+        // Perform the API request to get the image URL
+        val call = lastFmService.searchTracks("a863ec62a3b501170c759fc562a79267", "$track $artist")
 
+        call.enqueue(object : Callback<SearchResponse> {
+            override fun onResponse(call: Call<SearchResponse>, response: Response<SearchResponse>) {
+                if (response.isSuccessful) {
+                    val searchResults = response.body()?.results?.trackmatches?.track
+                    if (!searchResults.isNullOrEmpty()) {
+                        // Use the first result's image URL
+                        val imageUrl = searchResults[0].images?.find { it.size == "extralarge" }?.text ?: ""
+                        callback.invoke(imageUrl)
+                    } else {
+                        // Handle the case when there are no search results
+                        callback.invoke("")
+                    }
+                } else {
+                    // Handle error
+                    Log.e("APIResponse", "Error: ${response.code()} ${response.message()}")
+                    callback.invoke("")
+                }
+            }
+
+            override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
+                // Handle failure
+                Log.e("APIFailure", "Error: ${t.message}")
+                callback.invoke("")
+            }
+        })
+    }
 }

@@ -6,8 +6,10 @@ import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 import data.Review
 
 class FeedAdapter(
@@ -16,6 +18,7 @@ class FeedAdapter(
 ) : RecyclerView.Adapter<FeedAdapter.FeedViewHolder>() {
 
    inner class FeedViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), OnClickListener {
+       private val feedImageView: ImageView = itemView.findViewById(R.id.feedImage)
        private val titleTextView: TextView = itemView.findViewById(R.id.feedTitle)
        private val artistTextView: TextView = itemView.findViewById(R.id.feedArtist)
        private val contentTextView: TextView = itemView.findViewById(R.id.feedContent)
@@ -26,6 +29,11 @@ class FeedAdapter(
            titleTextView.text = feedItem.track.toString()
            artistTextView.text = feedItem.artist.toString()
            contentTextView.text = feedItem.content.toString()
+
+           Picasso.get().load(feedItem.image ?: "placeholder")
+               .placeholder(R.drawable.greenbtn)
+               .error(R.drawable.greenbtn)
+               .into(feedImageView)
 
            likeButton.setOnClickListener {
                val position = adapterPosition

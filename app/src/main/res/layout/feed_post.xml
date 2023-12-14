@@ -25,9 +25,11 @@
             app:cardCornerRadius="10dp">
 
             <ImageView
+                android:id="@+id/feedImage"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="@color/white" />
+                android:background="@color/white"
+                android:src="@drawable/greenbtn"/>
         </androidx.cardview.widget.CardView>
 
         <Space
