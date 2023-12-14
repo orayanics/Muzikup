@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.muzikup.fragment.AddPostFragment
 import com.example.muzikup.fragment.FeedFragment
+import com.example.muzikup.fragment.HomeFragment
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,22 +22,34 @@ class MainActivity : AppCompatActivity() {
         // ICONS
         val btnHome : ImageView = findViewById(R.id.footerHome)
         val btnAdd : ImageView = findViewById(R.id.btnAdd)
+        val btnProfile : ImageView = findViewById(R.id.btnProfile)
         btnHome.setImageResource(R.drawable.home_fill)
 
         // NAVIGATION
         val homeBtn : ImageView = findViewById(R.id.footerHome)
         val postBtn : ImageView = findViewById(R.id.btnAdd)
+        val profileBtn : ImageView = findViewById(R.id.btnProfile)
 
         homeBtn.setOnClickListener {
             btnHome.setImageResource(R.drawable.home_fill)
             btnAdd.setImageResource(R.drawable.add_nofill)
+            btnProfile.setImageResource(R.drawable.profile_nofill)
             setFragment(FeedFragment())
         }
 
         postBtn.setOnClickListener {
             btnAdd.setImageResource(R.drawable.add_fill)
             btnHome.setImageResource(R.drawable.home_nofill)
+            btnProfile.setImageResource(R.drawable.profile_nofill)
             setFragment(AddPostFragment())
+
+        }
+
+        profileBtn.setOnClickListener {
+            btnAdd.setImageResource(R.drawable.add_nofill)
+            btnHome.setImageResource(R.drawable.home_nofill)
+            btnProfile.setImageResource(R.drawable.profile_fill)
+            setFragment(HomeFragment())
 
         }
     }

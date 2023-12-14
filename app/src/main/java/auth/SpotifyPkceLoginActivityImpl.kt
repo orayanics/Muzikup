@@ -12,6 +12,7 @@ import com.example.muzikup.FeedActivity
 import com.example.muzikup.MainActivity
 import com.example.muzikup.SearchFeedActivity
 import com.example.muzikup.SpotifyPlaygroundApplication
+import com.example.muzikup.fragment.AddPostFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -22,8 +23,8 @@ internal var pkceClassBackTo: Class<out Activity>? = null
 class SpotifyPkceLoginActivityImpl : AbstractSpotifyPkceLoginActivity() {
     override val clientId = BuildConfig.SPOTIFY_CLIENT_ID
     override val redirectUri = BuildConfig.SPOTIFY_REDIRECT_URI_PKCE
+    override val scopes = (SpotifyScope.entries).toList()
     //override val scopes = SpotifyScope.values().toList()
-    override val scopes = (SpotifyScope.entries + SpotifyScope.USER_READ_EMAIL + SpotifyScope.USER_READ_PRIVATE).toList()
 
 
     override fun onSuccess(api: SpotifyClientApi) {
@@ -47,17 +48,15 @@ class SpotifyPkceLoginActivityImpl : AbstractSpotifyPkceLoginActivity() {
 
             //Fetch user's private information (including email and profile picture)
             val userPrivate: SpotifyUserInformation = api.users.getClientProfile()
-            val userId = userPrivate.displayName
-            val email = userPrivate.email
-            val profilePictureUrl = userPrivate.images?.firstOrNull()?.url
+            val userName = userPrivate.displayName
+            //val userId = userPrivate.id
+            val profilePictureUrl = userPrivate.images
 
-            Log.d("login", "Profile Picture URL: $profilePictureUrl")
+            Log.d("login", "User's ID: $userName, Prof: $profilePictureUrl")
 
-            toast("User's ID: $userId\nUser's Email: $email\nProfile Picture URL: $profilePictureUrl")
         } catch (e: Exception) {
             e.printStackTrace()
             Log.d("loginerror", "API Error: ${e.message}.")
-            toast("Error fetching user information: ${e.message}")
         }
     }
 

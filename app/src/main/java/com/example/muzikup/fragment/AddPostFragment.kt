@@ -250,4 +250,5 @@ class AddPostFragment : Fragment(), SearchAdapter.OnItemClickListener {
             }
         })
     }
+
 }

@@ -13,7 +13,7 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        val btnLogin : TextView = findViewById(R.id.btnLogin)
+        val btnLogin: TextView = findViewById(R.id.btnLogin)
 
         btnLogin.setOnClickListener {
             onConnectSpotifyPKCEClick()

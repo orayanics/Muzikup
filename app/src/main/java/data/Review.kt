@@ -7,7 +7,7 @@ data class Review(
     var content: String? = null,
     val likes: Int,
     val isLiked: MutableMap<String, Boolean> = mutableMapOf(),
-    val username: String? = null,
+    var username: String? = null,
     var image: String? = null
 
 )
