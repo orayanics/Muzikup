@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import api.LastFmService
 import api.SearchResponse
+import api.TrackResponse
 import com.adamratzman.spotify.utils.Language
 import com.example.muzikup.R
 import com.example.muzikup.SearchAdapter
@@ -170,6 +171,7 @@ class AddPostFragment : Fragment(), SearchAdapter.OnItemClickListener {
 
             searchAdapter.notifyItemChanged(position)
         }
+
         } catch (e : Exception){
             Log.e("RecyclerView", e.toString())
         }
@@ -224,6 +226,7 @@ class AddPostFragment : Fragment(), SearchAdapter.OnItemClickListener {
     private fun showToast(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
+
     private fun retrieveLastFmImage(track: String, artist: String, callback: (String) -> Unit) {
         // Perform the API request to get the image URL
         val call = lastFmService.searchTracks("a863ec62a3b501170c759fc562a79267", "$track $artist")
@@ -254,5 +257,9 @@ class AddPostFragment : Fragment(), SearchAdapter.OnItemClickListener {
             }
         })
     }
+
+
+
+
 
 }

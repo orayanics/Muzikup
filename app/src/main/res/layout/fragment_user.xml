@@ -28,48 +28,49 @@
 
 
     <LinearLayout
+        android:id="@+id/linearLayout4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_weight="1"
-        android:gravity="center"
         android:elevation="3dp"
-        android:paddingVertical="10dp"
-        android:padding="20dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:outlineAmbientShadowColor="@color/white"
         android:outlineSpotShadowColor="@color/white"
-        android:outlineAmbientShadowColor="@color/white">
+        android:padding="20dp"
+        android:paddingVertical="10dp">
 
         <ImageView
             android:id="@+id/profile"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:background="@drawable/profile_icon"
-            android:src="@drawable/ic_launcher_foreground"/>
+            android:src="@drawable/ic_launcher_foreground" />
 
         <TextView
             android:id="@+id/usernamee"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
             android:fontFamily="@font/inter_bold"
+            android:text="def"
+            android:textAlignment="center"
             android:textColor="@color/white"
-            android:textSize="30sp"
-            android:text="def"/>
+            android:textSize="30sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/accent_green"
+            android:gravity="center"
             android:orientation="horizontal"
-            android:padding="20dp"
-            android:gravity="center">
+            android:padding="20dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:background="#00FFFFFF"
-                android:orientation="vertical"
-                android:layout_weight="1">
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -95,9 +96,9 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:background="#00FFFFFF"
                 android:orientation="vertical">
 
@@ -125,9 +126,9 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:background="#00FFFFFF"
                 android:orientation="vertical">
 
@@ -187,7 +188,7 @@
                 android:layout_height="wrap_content"
                 android:background="@null"
                 android:fontFamily="@font/inter_bold"
-                android:text="239/300 EXP"
+                android:text="0/100 EXP"
                 android:textAlignment="textEnd"
                 android:textColor="@color/white"
                 android:textSize="15sp" />
@@ -202,17 +203,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0"
-        android:orientation="vertical"
         android:elevation="8dp"
+        android:orientation="vertical"
+        android:outlineAmbientShadowColor="@color/white"
         android:outlineSpotShadowColor="@color/white"
-        android:outlineAmbientShadowColor="@color/white">
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-<!--        <androidx.cardview.widget.CardView-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content">-->
+        <!--        <androidx.cardview.widget.CardView-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content">-->
 
-<!--            <include layout="@layout/footer_user"/>-->
-<!--        </androidx.cardview.widget.CardView>-->
+        <!--            <include layout="@layout/footer_user"/>-->
+        <!--        </androidx.cardview.widget.CardView>-->
 
     </LinearLayout>
 
