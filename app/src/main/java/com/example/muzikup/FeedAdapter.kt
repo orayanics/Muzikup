@@ -22,6 +22,7 @@ class FeedAdapter(
        private val titleTextView: TextView = itemView.findViewById(R.id.feedTitle)
        private val artistTextView: TextView = itemView.findViewById(R.id.feedArtist)
        private val contentTextView: TextView = itemView.findViewById(R.id.feedContent)
+       private val userTextView: TextView = itemView.findViewById(R.id.feedUsername)
        private val likeButton: ImageButton = itemView.findViewById(R.id.btnHeart)
        private val likeCount : TextView = itemView.findViewById(R.id.countLikes)
 
@@ -29,6 +30,7 @@ class FeedAdapter(
            titleTextView.text = feedItem.track.toString()
            artistTextView.text = feedItem.artist.toString()
            contentTextView.text = feedItem.content.toString()
+           userTextView.text = feedItem.username.toString()
 
            Picasso.get().load(feedItem.image ?: "placeholder")
                .placeholder(R.drawable.greenbtn)

@@ -39,7 +39,7 @@ class HomeFragment : Fragment() {
 
 
         //set display name
-        usernameTextView.text = userName
+        usernameTextView.text = userName ?: "DefaultUsername"
 
         if (profilePictureUrl?.isNotEmpty() == true) {
             Picasso.get()

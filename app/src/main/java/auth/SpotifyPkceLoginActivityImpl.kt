@@ -11,6 +11,12 @@ import com.adamratzman.spotify.models.SpotifyUserInformation
 import com.example.muzikup.BuildConfig
 import com.example.muzikup.MainActivity
 import com.example.muzikup.SpotifyPlaygroundApplication
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import data.UserProfile
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -62,6 +68,19 @@ class SpotifyPkceLoginActivityImpl : AbstractSpotifyPkceLoginActivity() {
             preferences.edit().putString("DISPLAY_NAME", userName).apply()
             preferences.edit().putString("PROFILE_PICTURE_URL", profilePictureUrl).apply()
 
+            // Create a UserProfile object
+            val userProfile = userName?.let { UserProfile(it) }
+
+            // Save the UserProfile to Firebase Realtime Database
+            if (userProfile != null) {
+                saveUserProfileToFirebase(userProfile)
+            }
+
+            // Check if the user already exists in the database
+            if (userName != null) {
+                checkIfUserExistsInDatabase(userName)
+            }
+
 
             Log.d("login", "User's ID: $userName, Prof: $profilePictureUrl")
 
@@ -70,15 +89,73 @@ class SpotifyPkceLoginActivityImpl : AbstractSpotifyPkceLoginActivity() {
             Log.d("loginerror", "API Error: ${e.message}.")
         }
     }
-    private suspend fun getUserDisplayName(api: SpotifyClientApi): String {
-        return try {
-            val userPrivate: SpotifyUserInformation = api.users.getClientProfile()
-            userPrivate.displayName ?: "DefaultUsername"
+    private fun saveUserProfileToFirebase(userProfile: UserProfile) {
+        try {
+            // Get a reference to your Firebase Realtime Database
+            val database: FirebaseDatabase = FirebaseDatabase.getInstance()
+            val databaseReference: DatabaseReference = database.reference
+
+            // Assume "users" is the root node for user profiles
+            val usersReference: DatabaseReference = databaseReference.child("users")
+
+            // Check if the username already exists
+            usersReference.orderByChild("displayName").equalTo(userProfile.displayName)
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            // Username already exists, handle the error
+                            Log.d("FirebaseSave", "Error: Username already exists.")
+                        } else {
+                            // Generate a unique key for the user
+                            val userId: String = usersReference.push().key ?: ""
+
+                            // Save the UserProfile under the generated user ID
+                            usersReference.child(userId).setValue(userProfile)
+
+                            Log.d("FirebaseSave", "User profile saved successfully")
+                        }
+                    }
+
+                    override fun onCancelled(databaseError: DatabaseError) {
+                        Log.d("FirebaseSave", "Error: ${databaseError.message}")
+                    }
+                })
         } catch (e: Exception) {
             e.printStackTrace()
-            Log.d("loginerror", "API Error: ${e.message}.")
-            "DefaultUsername"
+            Log.d("FirebaseSave", "Error saving user profile: ${e.message}")
         }
+    }
+
+    private fun checkIfUserExistsInDatabase(userName: String) {
+        // Get a reference to your Firebase Realtime Database
+        val database: FirebaseDatabase = FirebaseDatabase.getInstance()
+        val usersReference: DatabaseReference = database.reference.child("users")
+
+        // Query the database to check if the username exists
+        usersReference.orderByChild("displayName").equalTo(userName)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        // Username already exists, fetch the user profile data
+                        val userProfile: UserProfile? = dataSnapshot.children.firstOrNull()
+                            ?.getValue(UserProfile::class.java)
+
+                        if (userProfile != null) {
+                            // Use the fetched data as needed
+                            Log.d("FirebaseFetch", "Fetched user profile from the database: $userProfile")
+                        } else {
+                            Log.d("FirebaseFetch", "Error: User profile is null.")
+                        }
+                    } else {
+                        // Username does not exist in the database
+                        Log.d("FirebaseFetch", "Username does not exist in the database.")
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.d("FirebaseFetch", "Error: ${databaseError.message}")
+                }
+            })
     }
 
     override fun onFailure(exception: Exception) {

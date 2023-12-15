@@ -1,5 +1,6 @@
 package com.example.muzikup.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.os.StrictMode
 import android.util.Log
@@ -146,6 +147,9 @@ class AddPostFragment : Fragment(), SearchAdapter.OnItemClickListener {
             val info: TextView = requireView().findViewById(R.id.txtInfo)
             val content: EditText = requireView().findViewById(R.id.postContent)
 
+            val preferences = requireActivity().getSharedPreferences("MyPrefs", Context.MODE_PRIVATE)
+            val displayName = preferences.getString("DISPLAY_NAME", "DefaultUsername")
+
             // get username
             retrieveLastFmImage(track, artist) { imageUrl ->
             review = Review(
@@ -155,7 +159,7 @@ class AddPostFragment : Fragment(), SearchAdapter.OnItemClickListener {
                 content = content.text.toString(),  // Use text property directly
                 likes = 0,
                 isLiked = mutableMapOf(),
-                username = "",
+                username = displayName,
                 image = imageUrl
             )
 

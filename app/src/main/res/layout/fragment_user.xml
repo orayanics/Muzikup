@@ -82,6 +82,7 @@
                     android:textSize="15sp" />
 
                 <TextView
+                    android:id="@+id/userLike"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@null"
@@ -111,6 +112,7 @@
                     android:textSize="15sp" />
 
                 <TextView
+                    android:id="@+id/userReview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@null"
@@ -140,6 +142,7 @@
                     android:textSize="15sp" />
 
                 <TextView
+                    android:id="@+id/userLevel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@null"
@@ -159,6 +162,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/ProgLevel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@null"
@@ -178,6 +182,7 @@
                 android:progressDrawable="@drawable/progress_bar" />
 
             <TextView
+                android:id="@+id/exp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@null"
