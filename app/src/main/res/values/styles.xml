@@ -5,4 +5,10 @@
         <item name="android:editTextColor">@android:color/white</item>
         <!-- Customize other attributes if needed -->
     </style>
+    <style name="Theme.Muzikup" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:background">#000000</item>
+        <item name="android:windowBackground">@color/black</item>
+    </style>
 </resources>

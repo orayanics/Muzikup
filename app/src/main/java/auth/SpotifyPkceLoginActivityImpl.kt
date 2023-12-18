@@ -16,10 +16,12 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import data.Review
 import data.UserProfile
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import utils.toast
 
 internal var pkceClassBackTo: Class<out Activity>? = null
@@ -71,6 +73,7 @@ class SpotifyPkceLoginActivityImpl : AbstractSpotifyPkceLoginActivity() {
             // Create a UserProfile object
             val userProfile = userName?.let { UserProfile(it) }
 
+
             // Save the UserProfile to Firebase Realtime Database
             if (userProfile != null) {
                 saveUserProfileToFirebase(userProfile)
@@ -89,6 +92,7 @@ class SpotifyPkceLoginActivityImpl : AbstractSpotifyPkceLoginActivity() {
             Log.d("loginerror", "API Error: ${e.message}.")
         }
     }
+
     private fun saveUserProfileToFirebase(userProfile: UserProfile) {
         try {
             // Get a reference to your Firebase Realtime Database

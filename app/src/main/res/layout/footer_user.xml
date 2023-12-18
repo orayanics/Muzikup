@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="20dp"
-    android:background="@color/bg_black">
+    android:background="@color/black">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,7 +22,7 @@
             android:layout_height="30dp"
             android:layout_weight="1"
             android:src="@drawable/home_nofill"
-            android:background="@color/bg_black"/>
+            android:background="@color/black"/>
 
 
         <ImageView
@@ -31,7 +31,7 @@
             android:layout_height="30dp"
             android:layout_weight="1"
             android:src="@drawable/add_nofill"
-            android:background="@color/bg_black"/>
+            android:background="@color/black"/>
 
         <ImageView
             android:id="@+id/btnProfile"
@@ -39,7 +39,7 @@
             android:layout_height="30dp"
             android:layout_weight="1"
             android:src="@drawable/profile_nofill"
-            android:background="@color/bg_black"/>
+            android:background="@color/black"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

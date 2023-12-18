@@ -6,12 +6,9 @@
     <color name="gray_dark">#161616</color>
 
     <!-- Base application theme. -->
-    <style name="Base.Theme.Muzikup" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.Muzikup" parent="Theme.AppCompat.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-        <item name="android:background">#111111</item>
+        <item name="android:background">#000000</item>
+        <item name="android:windowBackground">@color/black</item>
     </style>
-
-    <style name="Theme.Muzikup" parent="Base.Theme.Muzikup" />
-
 </resources>
