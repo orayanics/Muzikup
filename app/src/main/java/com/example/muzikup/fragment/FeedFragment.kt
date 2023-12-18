@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.muzikup.FeedAdapter
@@ -23,9 +24,11 @@ import data.Review
 
 class FeedFragment : Fragment() {
 
+
     private lateinit var database: DatabaseReference
     private lateinit var recyclerView: RecyclerView
     private lateinit var feedAdapter: FeedAdapter
+    private var originalFeedResults: List<Review> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,10 +49,16 @@ class FeedFragment : Fragment() {
         database.child("Review").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val feedResults = mutableListOf<Review>()
+                originalFeedResults = mutableListOf()
+
                 for (snapshot in dataSnapshot.children) {
                     val feedItem = snapshot.getValue(Review::class.java)
-                    feedItem?.let { feedResults.add(it) }
+                    feedItem?.let {
+                        feedResults.add(it)
+                        (originalFeedResults as MutableList<Review>).add(it) // Add to original feedResults
+                    }
                 }
+
                 feedAdapter = FeedAdapter(feedResults, object : FeedAdapter.OnItemClickListener {
                     override fun onItemClick(position: Int, review: Review) {
                         // Handle item click
@@ -65,10 +74,36 @@ class FeedFragment : Fragment() {
             }
         })
 
+        // Set up SearchView
+        val searchView: SearchView = activity?.findViewById(R.id.btnSearch) ?: return view
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                filterFeed(newText)
+                return true
+            }
+        })
+
         return view
     }
 
     // Other functions
+
+    private fun filterFeed(query: String?) {
+        val filteredList = mutableListOf<Review>()
+
+        originalFeedResults.forEach { review ->
+            if (query.isNullOrBlank() || review.track?.contains(query, ignoreCase = true) == true) {
+                filteredList.add(review)
+            }
+        }
+
+        feedAdapter.updateList(filteredList)
+    }
+
     // For liking
     fun likePost(review: Review, username : String) {
         val reviewRef = review.reviewId?.let { database.child("Review").child(it) }

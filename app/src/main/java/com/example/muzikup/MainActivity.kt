@@ -4,7 +4,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.EditText
 import android.widget.ImageView
+import androidx.appcompat.widget.SearchView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainer
 import androidx.fragment.app.FragmentManager
@@ -19,7 +22,28 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         setFragment(FeedFragment())
+        //searchbar
+        val searchView: SearchView = findViewById(R.id.btnSearch)
+        searchView.setOnQueryTextFocusChangeListener { _, hasFocus ->
+            val titleView: View = findViewById(R.id.title)
+            val navbarSearchView: View = findViewById(R.id.navbarSearch)
 
+            if (hasFocus) {
+                // Hide the title and show the SearchView when focused
+                titleView.visibility = View.GONE
+                navbarSearchView.visibility = View.VISIBLE
+            } else {
+                // Show the title and hide the SearchView when not focused
+                titleView.visibility = View.VISIBLE
+
+                // Collapse the SearchView when not focused
+                searchView.onActionViewCollapsed()
+            }
+        }
+
+        // Update visibility of navbars
+        findViewById<View>(R.id.navbarDefault).visibility = View.GONE
+        findViewById<View>(R.id.navbarSearch).visibility = View.VISIBLE
 
         // ICONS
         val btnHome : ImageView = findViewById(R.id.footerHome)
@@ -37,6 +61,29 @@ class MainActivity : AppCompatActivity() {
             btnAdd.setImageResource(R.drawable.add_nofill)
             btnProfile.setImageResource(R.drawable.profile_nofill)
             setFragment(FeedFragment())
+
+            // Update visibility of navbars
+            findViewById<View>(R.id.navbarDefault).visibility = View.GONE
+            findViewById<View>(R.id.navbarSearch).visibility = View.VISIBLE
+
+            //searchbar
+            val searchView: SearchView = findViewById(R.id.btnSearch)
+            searchView.setOnQueryTextFocusChangeListener { _, hasFocus ->
+                val titleView: View = findViewById(R.id.title)
+                val navbarSearchView: View = findViewById(R.id.navbarSearch)
+
+                if (hasFocus) {
+                    // Hide the title and show the SearchView when focused
+                    titleView.visibility = View.GONE
+                    navbarSearchView.visibility = View.VISIBLE
+                } else {
+                    // Show the title and hide the SearchView when not focused
+                    titleView.visibility = View.VISIBLE
+
+                    // Collapse the SearchView when not focused
+                    searchView.onActionViewCollapsed()
+                }
+            }
         }
 
         postBtn.setOnClickListener {
@@ -44,6 +91,10 @@ class MainActivity : AppCompatActivity() {
             btnHome.setImageResource(R.drawable.home_nofill)
             btnProfile.setImageResource(R.drawable.profile_nofill)
             setFragment(AddPostFragment())
+
+            // Update visibility of navbars
+            findViewById<View>(R.id.navbarDefault).visibility = View.VISIBLE
+            findViewById<View>(R.id.navbarSearch).visibility = View.GONE
 
         }
 
@@ -56,7 +107,12 @@ class MainActivity : AppCompatActivity() {
                 .replace(R.id.fragmentContainer, homeFragment)
                 .commit()
 
+            // Update visibility of navbars
+            findViewById<View>(R.id.navbarDefault).visibility = View.VISIBLE
+            findViewById<View>(R.id.navbarSearch).visibility = View.GONE
+
         }
+
     }
 
     private fun setFragment(fragment: Fragment) {

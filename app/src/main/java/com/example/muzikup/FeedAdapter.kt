@@ -48,6 +48,7 @@ class FeedAdapter(
            likeCounter(feedItem)
        }
 
+
        private fun likeCounter(feedItem: Review) {
            // Get the like count from your Review object or Firebase Database and set it to the TextView
            val count = feedItem.likes // Replace 'likes' with the appropriate field in your Review object
@@ -82,4 +83,9 @@ class FeedAdapter(
     }
 
     override fun getItemCount(): Int = feedResults.size
+
+    fun updateList(newList: List<Review>) {
+        feedResults = newList
+        notifyDataSetChanged()
+    }
 }

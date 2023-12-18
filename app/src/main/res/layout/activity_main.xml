@@ -23,7 +23,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <include layout="@layout/nav_nosearch" />
+            <include
+                android:id="@+id/navbarDefault"
+                layout="@layout/nav_nosearch"
+                android:visibility="visible"/>
+
+            <include
+                android:id="@+id/navbarSearch"
+                layout="@layout/nav_search"
+                android:visibility="gone"/>
+
 
         </androidx.cardview.widget.CardView>
 
