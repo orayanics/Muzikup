@@ -38,7 +38,7 @@ class SpotifyPkceLoginActivityImpl : AbstractSpotifyPkceLoginActivity() {
         model.credentialStore.setSpotifyApi(api)
         val classBackTo = pkceClassBackTo ?: MainActivity::class.java
         pkceClassBackTo = null
-        toast("Authentication has completed. Launching ${classBackTo.simpleName}..")
+        toast("Authentication complete!")
         startActivity(Intent(this, classBackTo))
 
         // Create a CoroutineScope
@@ -70,19 +70,25 @@ class SpotifyPkceLoginActivityImpl : AbstractSpotifyPkceLoginActivity() {
             preferences.edit().putString("DISPLAY_NAME", userName).apply()
             preferences.edit().putString("PROFILE_PICTURE_URL", profilePictureUrl).apply()
 
-            // Create a UserProfile object
-            val userProfile = userName?.let { UserProfile(it) }
-
-
-            // Save the UserProfile to Firebase Realtime Database
-            if (userProfile != null) {
-                saveUserProfileToFirebase(userProfile)
-            }
+//            // Create a UserProfile object
+//            val userProfile = userName?.let { UserProfile(it) }
+//
+//
+//            // Save the UserProfile to Firebase Realtime Database
+//            if (userProfile != null) {
+//                saveUserProfileToFirebase(userProfile)
+//            }
+//
+//            // Fetch user profile data from Firebase after saving it
+//            if (userName != null) {
+//                fetchUserProfileFromFirebase(userName)
+//            }
 
             // Check if the user already exists in the database
             if (userName != null) {
                 checkIfUserExistsInDatabase(userName)
             }
+
 
 
             Log.d("login", "User's ID: $userName, Prof: $profilePictureUrl")
@@ -91,6 +97,43 @@ class SpotifyPkceLoginActivityImpl : AbstractSpotifyPkceLoginActivity() {
             e.printStackTrace()
             Log.d("loginerror", "API Error: ${e.message}.")
         }
+    }
+
+
+    private fun checkIfUserExistsInDatabase(userName: String) {
+        // Get a reference to your Firebase Realtime Database
+        val database: FirebaseDatabase = FirebaseDatabase.getInstance()
+        val usersReference: DatabaseReference = database.reference.child("users")
+
+        // Query the database to check if the username exists
+        usersReference.orderByChild("displayName").equalTo(userName)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        // Username already exists, fetch the user profile data
+                        val userProfile: UserProfile? = dataSnapshot.children.firstOrNull()
+                            ?.getValue(UserProfile::class.java)
+
+                        if (userProfile != null) {
+                            // Use the fetched data as needed
+                            Log.d("FirebaseFetch", "Fetched user profile from the database: $userProfile")
+
+                            // Fetch user profile data from Firebase after saving it
+                            fetchUserProfileFromFirebase(userName)
+                        } else {
+                            Log.d("FirebaseFetch", "Error: User profile is null.")
+                        }
+                    } else {
+                        // Username does not exist in the database, save a new userProfile
+                        val userProfile = UserProfile(userName)
+                        saveUserProfileToFirebase(userProfile)
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    Log.d("FirebaseFetch", "Error: ${databaseError.message}")
+                }
+            })
     }
 
     private fun saveUserProfileToFirebase(userProfile: UserProfile) {
@@ -107,8 +150,26 @@ class SpotifyPkceLoginActivityImpl : AbstractSpotifyPkceLoginActivity() {
                 .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         if (dataSnapshot.exists()) {
-                            // Username already exists, handle the error
-                            Log.d("FirebaseSave", "Error: Username already exists.")
+                            // Username already exists, update the user profile
+                            val existingUser = dataSnapshot.children.firstOrNull()
+
+                            // Update userExp and userLevel
+                            existingUser?.ref?.child("userExp")?.setValue(userProfile.userExp)
+
+                            // Check if userExp is greater than or equal to 100
+                            if (userProfile.userExp >= 100) {
+                                // Calculate the number of level increases based on userExp
+                                val levelIncrease = userProfile.userExp / 100
+
+                                // Increase the userLevel by the calculated number
+                                userProfile.userLevel += levelIncrease
+                                existingUser?.ref?.child("userLevel")?.setValue(userProfile.userLevel)
+
+                                // Reset userExp to the remainder after reaching 100
+                                existingUser?.ref?.child("userExp")?.setValue(userProfile.userExp % 100)
+                            }
+
+                            Log.d("FirebaseSave", "User profile updated successfully")
                         } else {
                             // Generate a unique key for the user
                             val userId: String = usersReference.push().key ?: ""
@@ -129,9 +190,8 @@ class SpotifyPkceLoginActivityImpl : AbstractSpotifyPkceLoginActivity() {
             Log.d("FirebaseSave", "Error saving user profile: ${e.message}")
         }
     }
-
-    private fun checkIfUserExistsInDatabase(userName: String) {
-        // Get a reference to your Firebase Realtime Database
+    private fun fetchUserProfileFromFirebase(userName: String) {
+        // Fetch user profile data from Firebase after saving it
         val database: FirebaseDatabase = FirebaseDatabase.getInstance()
         val usersReference: DatabaseReference = database.reference.child("users")
 
